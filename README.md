@@ -25,7 +25,7 @@
 </script>
 ```
 
-## [Пример](https://github.io/typograf/jquery-typograf/example.html)
+## [Пример](https://typograf.github.io/jquery-typograf/example.html)
 
 ## [Лицензия](./LICENSE)
 MIT License
