@@ -9,38 +9,99 @@
         <style>
             .page
             {
-                padding: 50px;
+                padding: 20px 50px;
             }
-            
+
             h1
             {
                 font-family: Georgia, serif;
                 font-style: italic;
                 font-weight: normal;
             }
-            
-            input, textarea
+
+            textarea
             {
-                width: 400px;
-                box-sizing: border-box;
+                width: 100%;
             }
-            
+
+            #example
+            {
+                display: none;
+            }
+
+            #example-label
+            {
+                font-style: italic;
+                margin-top: -1em;
+            }
+
+            #example-text
+            {
+                width: 100%;
+                padding: 5px;
+                margin-bottom: 1em;
+                min-height: 2em;
+                background: #f0f0f0;
+            }
+
+            .col
+            {
+                float: left;
+                margin-left: 1em;
+                width: 400px;
+            }
         </style>
     </head>
     <body>
         <div class="page">
             <h1>Типографика на лету</h1>
-            <div class="example">
-                <input type="text" val=""/><br/><br/>
-                <textarea rows="10"></textarea>
+            <div class="col">
+                <textarea autocomplete="off" placeholder="Введите текст" rows="10"></textarea><br />
+            </div>
+            <div class="col">
+                <div id="example">
+                    <div id="example-label">Вводимый текст:</div>
+                    <div id="example-text"></div>
+                </div>
+                <input type="button" id="start" value="Пример ввода" />
             </div>
         </div>
         <script>
+        (function() {
             $(document).ready(function() {
-                $('input,textarea').autotypograf({
+                $('textarea').autotypograf({
                     lang: 'ru'
                 });
             });
+
+            var text = '"Будь прост, но не слишком!! Простейшее - амёба." Э. Кроткий',
+                position = 0,
+                currentText = '',
+                timer;
+
+            $('#start').click(function() {
+                if(timer) {
+                    clearInterval(timer);
+                    timer = null;
+                }
+
+                $('#example').show();
+
+                position = 0;
+                timer = setInterval(function() {
+                    currentText = text.substr(0, position);
+                    position++;
+                    $('#example-text').html(currentText);
+
+                    $('textarea').val(currentText).trigger('input');
+
+                    if(position > text.length) {
+                        clearInterval(timer);
+                        timer = null;
+                    }
+                }, 100);
+            });
+        })();
         </script>
     </body>
 </html>
