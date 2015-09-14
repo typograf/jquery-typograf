@@ -1,8 +1,10 @@
 (function($) {
 
 $.fn.autotypograf = function(prefs) {
+    prefs = prefs || {};
+    prefs.live = true;
+
     var typograf = new Typograf(prefs);
-    typograf.disable('common/space/trimRight');
 
     $.each(this, function() {
         var $elem = $(this),
@@ -17,7 +19,6 @@ $.fn.autotypograf = function(prefs) {
                     $elem.val(lastVal);
                     setCaretPosition(this, pos === val.length ? lastVal.length : pos);
                 }
-
             })
             .val(typograf.execute(lastVal));
     });

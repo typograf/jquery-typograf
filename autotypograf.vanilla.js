@@ -1,7 +1,9 @@
 function autotypograf(elem, prefs) {
+    prefs = prefs || {};
+    prefs.live = true;
+
     var lastVal = $elem.val(),
         typograf = new Typograf(prefs);
-    typograf.disable('common/space/trimRight');
 
     elem.addEventListener('input', function(e) {
         var val = $elem.val();
