@@ -5,7 +5,7 @@
 
 ## Использование с jQuery
 ```html
-<script src="../typograf/dist/typograf.js"></script>
+<script src="./node_modules/typograf/dist/typograf.js"></script>
 <script src="./jquery.autotypograf.js"></script>
 ...
 <input type="text" val=""/>
@@ -16,7 +16,7 @@
 
 ## Использование без jQuery
 ```html
-<script src="../typograf/dist/typograf.js"></script>
+<script src="./node_modules/typograf/dist/typograf.js"></script>
 <script src="./autotypograf.vanilla.js"></script>
 ...
 <input type="text" val="" id="text" />
