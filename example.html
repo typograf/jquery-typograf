@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
         <script src="https://typograf.github.io/build/typograf.js"></script>
         <script src="jquery.autotypograf.js"></script>
         <title>Пример использования jquery.autotypograf.js</title>
@@ -29,13 +29,14 @@
                 display: none;
             }
 
-            #example-label
+            #example-label,
+            #example-html-label
             {
                 font-style: italic;
-                margin-top: -1em;
             }
 
-            #example-text
+            #example-text,
+            #example-html-text
             {
                 width: 100%;
                 padding: 5px;
@@ -44,40 +45,69 @@
                 background: #f0f0f0;
             }
 
-            .col
+            .row
             {
-                float: left;
-                margin-right: 1em;
-                width: 400px;
+                margin-top: 1em;
+            }
+
+            .entity-nb
+            {
+                opacity: .4;
+                background: green;
             }
         </style>
     </head>
     <body>
         <div class="page">
             <h1>Типографика на лету</h1>
-            <div class="col">
+            <div class="row">
                 <textarea autocomplete="off" placeholder="Введите текст" rows="10"></textarea><br />
             </div>
-            <div class="col">
+            <div class="row"><input type="button" id="start" value="Пример ввода" /></div>
+            <div class="row">
                 <div id="example">
                     <div id="example-label">Вводимый текст:</div>
                     <div id="example-text"></div>
                 </div>
-                <input type="button" id="start" value="Пример ввода" />
+            </div>
+            <div class="row">
+                <div id="example-html">
+                    <div id="example-html-label">Подсветка неразрывных пробелов:</div>
+                    <div id="example-html-text"></div>
+                </div>
             </div>
         </div>
         <script>
         (function() {
-            $(document).ready(function() {
-                $('textarea').autotypograf({
-                    lang: 'ru'
+            function highlightText(text) {
+                [
+                    [/(\u00A0|&nbsp;|&#160;)/g, '\u00A0', 'NO-BREAK SPACE'],
+                    [/(\u202F|&#8239;)/g, '\u202F', 'NARROW NO-BREAK SPACE'],
+                    [/(\u2011|&#8209;)/g, '\u2011', 'NON-BREAKING HYPHEN']
+                ].forEach(function(el) {
+                    text = text.replace(el[0], '<span class="entity-nb" title="' + el[2] + '">' + el[1] + '</span>');
                 });
-            });
 
-            var text = '"Будь прост, но не слишком! Простейшее - амёба." Э. Кроткий',
+                return text;
+            }
+
+            var textarea = $('textarea'),
+                text = '"Будь прост, но не слишком! Простейшее - амёба." Э. Кроткий',
                 position = 0,
                 currentText = '',
                 timer;
+
+            $(document).ready(function() {
+                textarea.autotypograf({
+                    lang: 'ru'
+                });
+            })
+
+            textarea.on('input', function() {
+                setTimeout(function() {
+                    $('#example-html-text').html(highlightText(textarea.val()));
+                }, 1);
+            });
 
             $('#start').click(function() {
                 if(timer) {
@@ -85,15 +115,15 @@
                     timer = null;
                 }
 
-                $('#example').show();
-
                 position = 0;
+
+                $('#example').show();
                 timer = setInterval(function() {
                     currentText = text.substr(0, position);
                     position++;
-                    $('#example-text').html(currentText);
 
-                    $('textarea').val(currentText).trigger('input');
+                    textarea.val(currentText).trigger('input');
+                    $('#example-text').html(highlightText(currentText));
 
                     if(position > text.length) {
                         clearInterval(timer);
