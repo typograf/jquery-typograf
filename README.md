@@ -10,7 +10,7 @@
 ...
 <input type="text" val=""/>
 <script>
-    $('input').autotypograf({lang: 'ru'});
+    $('input').autotypograf({locale: ['ru', 'en-US']});
 </script>
 ```
 
@@ -21,7 +21,7 @@
 ...
 <input type="text" val="" id="text" />
 <script>
-    autotypograf(document.getElementById('text'), {lang: 'ru'});
+    autotypograf(document.getElementById('text'), {locale: ['ru', 'en-US']});
 </script>
 ```
 
